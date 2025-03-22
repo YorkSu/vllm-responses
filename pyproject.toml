@@ -1,0 +1,231 @@
+[project]
+name = "vllm-responses"
+description = "A vLLM plugin supporting OpenAI's Responses API."
+authors = [{ name = "York Su", email = "york_su@outlook.com" }]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8,<4.0"
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed"
+]
+dependencies = [
+    "anyio>=4",
+    "httpx",
+    "litestar>=2.15.1",
+    "msgspec",
+    "python-dotenv",
+    "typing-extensions",
+    "vllm",
+]
+
+[dependency-groups]
+dev = [
+    { include-group = "docs" },
+    { include-group = "linting" },
+    { include-group = "test" },
+]
+docs = [
+    "shibuya",
+    "sphinx",
+    "sphinx-autobuild",
+    "sphinx-design",
+]
+linting = [
+    "mypy[faster-cache]",
+    "pre-commit",
+    "ruff",
+]
+test = [
+    "coverage",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/vllm_responses/_version.py"
+
+[tool.ruff]
+src = ["src", "tests"]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.lint]
+extend-select = [
+    "A",      # flake8-builtins
+    "B",      # flake8-bugbear
+    "BLE",    # flake8-blind-except
+    "C4",     # flake8-comprehensions
+    "C90",    # mccabe
+    "D",      # pydocstyle
+    "DTZ",    # flake8-datetimez
+    "E",      # Pyflakes
+    "ERA",    # eradicate
+    "EXE",    # flake8-executable
+    "F",      # pycodestyle
+    "FURB",   # refurb
+    "G",      # flake8-logging-format
+    "I",      # isort
+    "ICN",    # flake8-import-conventions
+    "ISC",    # flake8-implicit-str-concat
+    "N",      # pep8-naming
+    "PIE",    # flake8-pie
+    "PTH",    # flake8-use-pathlib
+    "PERF",   # perflint
+    "Q",      # flake8-quotes
+    "RET",    # flake8-return
+    "RUF010", # ruff-expplicit-f-string
+    "RUF013", # ruff-implicit-optional
+    "RUF015", # ruff-prefer-next
+    "RUF017", # ruff-quadratic-list-summation
+    "RUF018", # ruff-avoid-assignment-in-assert
+    "RUF019", # ruff-unnecessary-key-check
+    "RUF021", # ruff-parenthesize-chained-operators
+    "RUF022", # ruff-unsorted-dunder-all
+    "RUF027", # ruff-missing-f-string-syntax
+    "RUF028", # ruff-invalid-formatter-suppression-comment
+    "RUF029", # ruff-unused-async
+    "RUF034", # ruff-useless-if-else
+    "RUF100", # ruff-unused-noqa
+    "SIM",    # flake8-simplify
+    "T10",    # flake8-debugger
+    "T20",    # flake8-print
+    "UP",     # pyupgrade
+    "W",      # pycodestyle
+    "YTT",    # flake8-2020
+]
+ignore = [
+    "A003", # flake8-builtins - class attribute {name} is shadowing a python builtin
+    "A005",
+    "B010", # flake8-bugbear - do not call setattr with a constant attribute value
+    "D100", # pydocstyle - missing docstring in public module
+    "D101", # pydocstyle - missing docstring in public class
+    "D102", # pydocstyle - missing docstring in public method
+    "D103", # pydocstyle - missing docstring in public function
+    "D104", # pydocstyle - missing docstring in public package
+    "D105", # pydocstyle - missing docstring in magic method
+    "D106", # pydocstyle - missing docstring in public nested class
+    "D107", # pydocstyle - missing docstring in __init__
+    "D202", # pydocstyle - no blank lines allowed after function docstring
+    "D205", # pydocstyle - 1 blank line required between summary line and description
+    "D415", # pydocstyle - first line should end with a period, question mark, or exclamation point
+    "E501", # pycodestyle line too long, handled by ruff format
+    "PIE790",
+    "RUF012", # Ruff-specific rule - annotated with classvar
+    "ISC001", # Ruff formatter incompatible
+    "CPY001", # ruff - copyright notice at the top of the file
+    "BLE001",
+]
+preview = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = [
+  "classmethod",
+  "sqlalchemy.ext.declarative.declared_attr",
+  "sqlalchemy.orm.declared_attr.directive",
+  "sqlalchemy.orm.declared_attr",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["vllm_responses", "tests"]
+lines-after-imports = 2
+
+[tool.ruff.format]
+line-ending = "lf"
+indent-style = "space"
+docstring-code-format = true
+docstring-code-line-length = 88
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F401"]
+"src/vllm_responses/_version.py" = ["ALL"]
+"**/{tests,docs,tools}/*" = ["E402"]
+"docs/**/*.*" = ["S", "B", "DTZ", "A", "TC", "ERA", "D", "RET"]
+
+[tool.mypy]
+packages = ["vllm_responses", "tests"]
+strict = true
+disable_error_code = "import-untyped"
+show_error_codes = true
+pretty = true
+disallow_any_generics = false
+implicit_reexport = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+testpaths = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  'if TYPE_CHECKING:',
+  'pragma: no cover',
+  "if __name__ == .__main__.:",
+  'def __repr__',
+  'if self\.debug:',
+  'if settings\.DEBUG',
+  'raise AssertionError',
+  'raise NotImplementedError',
+  'if 0:',
+  'class .*\bProtocol\):',
+  '@(abc\.)?abstractmethod',
+]
+omit = ["*/tests/*"]
+show_missing = true
+
+[tool.coverage.run]
+branch = true
+concurrency = ["multiprocessing", "thread"]
+omit = [
+    "*/tests/*",
+    "__init__.py",
+    "__main__.py",
+]
+parallel = true
+source = ["src"]
+
+[tool.git-cliff.git]
+commit_parsers = [
+  { message = "^feat", group = "<!-- 0 -->🚀 Features" },
+  { message = "^fix", group = "<!-- 1 -->🐛 Bug Fixes" },
+  { message = "^refactor", group = "<!-- 2 -->🚜 Refactor" },
+  { message = "^doc", group = "<!-- 3 -->📚 Documentation" },
+  { message = "^perf", group = "<!-- 4 -->⚡ Performance" },
+  { message = "^style", group = "<!-- 5 -->🎨 Styling" },
+  { message = "^test", group = "<!-- 6 -->🧪 Testing" },
+  { message = "^build", group = "<!-- 7 -->📦 Build System" },
+  { message = "^chore\\(release\\): prepare for", skip = true },
+  { message = "^chore", group = "<!-- 8 -->⚙️ Miscellaneous Tasks" },
+  { body = ".*security", group = "<!-- 9 -->🛡️ Security" },
+  { message = "^revert", group = "<!-- 10 -->◀️ Revert" },
+  { message = ".*", group = "<!-- 10 -->💼 Other" },
+]
+conventional_commits = true
+sort_commits = "oldest"
+tag_pattern = "v[0-9]*"
