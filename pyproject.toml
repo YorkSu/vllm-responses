@@ -1,6 +1,6 @@
 [project]
 name = "vllm-responses"
-description = "A vLLM plugin supporting OpenAI's Responses API."
+description = "A vLLM server for OpenAI's Responses API."
 authors = [{ name = "York Su", email = "york_su@outlook.com" }]
 readme = "README.md"
 license = { text = "MIT" }
@@ -19,15 +19,19 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Typing :: Typed"
 ]
+keywords = ["vllm", "litestar"]
 dependencies = [
     "anyio>=4",
     "httpx",
     "litestar>=2.15.1",
     "msgspec",
+    "openai>=1.68.2",
     "python-dotenv",
     "typing-extensions",
+    "uvicorn",
     "vllm",
 ]
+scripts = { vllm-responses = "vllm_responses.__main__:run_cli" }
 
 [dependency-groups]
 dev = [
